@@ -21,7 +21,7 @@ do
     Div(dividers, indecies, ref LCM, ref div);
 
     // Possible 'TODO' if only one item remains just multiply it to the LCM and break the loop 
-    div = div == dividers.Max() + 1 ? 2 : dividers.Min();
+    div = div == dividers.Max() + 1 ? dividers.Min() : div;
 
     indecies.Clear();
     // Removing all elements ends the loop
