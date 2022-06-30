@@ -1,11 +1,10 @@
-﻿var dividers = new List<int>(Console.ReadLine().Split().Select(int.Parse));
+﻿List<int> dividers = new (Console.ReadLine().Trim().Split().Select(int.Parse));
 ICollection<int> indecies = new List<int>();
 
-// Exceptions
-if (dividers.Contains(0)) throw new ArgumentException("Argument of zero impossible becuase it would imply invalid arithmetic opperation");
-if (dividers.Min() < 0) throw new ArgumentException("Sequence contains negative value");
+Arg0Exc(dividers);
 
-// Least common multiplier
+for (int i = 0; i < dividers.Count; i++) dividers[i] = Math.Abs(dividers[i]);
+
 var LCM = 1;
 
 // Divider which is incramented if is too small to dividers and 
@@ -14,26 +13,34 @@ var div = 2;
 
 do
 {
-    // Scans sequence for numbers that are devisable to the 'div' number
-    // and stores them to a collection
-    for (int i = 0; i < dividers.Count; i++) if (dividers[i] % div == 0) indecies.Add(i);
+    // Scans sequence for numbers that are devisable to the 'div' number and stores them in a collection
+    for (int i = 0; i < dividers.Count; i++) 
+        if (dividers[i] % div == 0) 
+            indecies.Add(i);
 
-    if (indecies.Count != 0) {
-        // Divides numbers at index
-        for (int j = 0; j < indecies.Count; j++) dividers[indecies.ElementAt(j)] /= div;
-        
-        LCM *= div;
-    }
-    // incraments div if no divisions have ocrred
-    else div++;
+    Div(dividers, indecies, ref LCM, ref div);
 
     // Possible 'TODO' if only one item remains just multiply it to the LCM and break the loop 
-    if (div == dividers.Max() + 1) div = 2;
+    div = div == dividers.Max() + 1 ? 2 : dividers.Min();
 
-    // Clears collection of indecies for next itteration
     indecies.Clear();
-    // Removes numbers that are equal to 1 which optimizes scan speed
+    // Removing all elements ends the loop
     dividers.RemoveAll(i => i == 1);
-} while (dividers.Any()); // ... and when all elements have been set to one and removed the loop
+} while (dividers.Any()); 
 
 Console.WriteLine(LCM);
+
+///<summary>
+///If any elements are present in indecies it divides by div else increases div so division is possible
+///</summary>
+static int Div(List<int> dividers, ICollection<int> indecies, ref int LCM, ref int div) {
+    if (indecies.Count != 0) {
+        for (int j = 0; j < indecies.Count; j++) dividers[indecies.ElementAt(j)] /= div;
+        return LCM *= div;
+    }
+
+    return div++;
+}
+
+static ArgumentException Arg0Exc (List<int> dividers) => dividers.Contains(0) ? 
+    throw new ArgumentException("Argument of zero impossible becuase it would imply invalid arithmetic operation") : null;
