@@ -2,9 +2,6 @@
 Stack<int> indecies = new ();
 
 Arg0Exc(dividers);
-
-if (dividers.Any(i => i < 0))
-    for (int i = 0; i < dividers.Count; i++) dividers[i] = Math.Abs(dividers[i]);
     
 var LCM = 1;
 
@@ -28,7 +25,7 @@ do
     dividers.RemoveAll(i => i == 1);
 } while (dividers.Any()); 
 
-Console.WriteLine(LCM);
+Console.WriteLine(Math.Abs(LCM));
 
 ///<summary>
 ///If any elements are present in indecies it divides by div else increases div so division is possible
